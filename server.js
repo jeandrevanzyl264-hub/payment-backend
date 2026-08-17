@@ -1,0 +1,148 @@
+const express = require('express');
+const mongoose = require('mongoose');
+const crypto = require('crypto');
+const app = express();
+
+app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json()); // Required to parse JSON payload sent by Paystack webhook
+
+app.use((req, res, next) => {
+  console.log(`📡 Incoming traffic: ${req.method} ${req.url}`);
+  next();
+});
+
+const PAYSTACK_SECRET_KEY = 'sk_test_b4bc4bc545029d23f829c12977446ec5010968a8';
+const MONGO_URI = 'mongodb+srv://jeandrevanzyl264_db_user:25FzusFWg759EYxb@vanzyldevelopers.nnlid44.mongodb.net/payment-db?retryWrites=true&w=majority&appName=VANZYLDEVELOPERS';
+
+// --- Database Connection ---
+mongoose.connect(MONGO_URI)
+  .then(() => console.log('✅ Connected to MongoDB!'))
+  .catch(err => console.error('❌ Database Connection Failed:', err));
+
+// --- Database Schema ---
+const orderSchema = new mongoose.Schema({
+  email: String,
+  amount: Number,
+  reference: String,
+  status: { type: String, default: 'Pending' },
+  createdAt: { type: Date, default: Date.now }
+});
+
+const Order = mongoose.model('Order', orderSchema);
+
+// --- User Routes ---
+app.get('/', (req, res) => res.sendFile(__dirname + '/public/index.html'));
+
+// Initialize Checkout
+app.post('/create-checkout-session', async (req, res) => {
+  try {
+    const customerEmail = "customer@example.com"; 
+    const priceInCents = 500000;
+
+    const newOrder = new Order({
+      email: customerEmail,
+      amount: priceInCents / 100
+    });
+
+    const savedOrder = await newOrder.save();
+
+    const response = await fetch('https://api.paystack.co/transaction/initialize', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${PAYSTACK_SECRET_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: customerEmail,
+        amount: priceInCents,
+        currency: "ZAR",
+        callback_url: `http://localhost:3000/verify-payment`
+      })
+    });
+
+    const data = await response.json();
+
+    if (data.status) {
+      savedOrder.reference = data.data.reference;
+      await savedOrder.save();
+      res.redirect(303, data.data.authorization_url);
+    } else {
+      res.status(400).send(`Payment Initialization Failed: ${data.message}`);
+    }
+  } catch (error) {
+    console.error('❌ Server Error:', error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+// Verify Payment Status (Frontend Redirect)
+app.get('/verify-payment', async (req, res) => {
+  const { reference } = req.query;
+  if (!reference) return res.status(400).send("No reference provided.");
+
+  try {
+    const response = await fetch(`https://api.paystack.co/transaction/verify/${reference}`, {
+      method: 'GET',
+      headers: { 'Authorization': `Bearer ${PAYSTACK_SECRET_KEY}` }
+    });
+
+    const data = await response.json();
+
+    if (data.status && data.data.status === 'success') {
+      const order = await Order.findOne({ reference: reference });
+      if (order) {
+        order.status = 'Paid';
+        await order.save();
+      }
+      res.redirect('/success.html');
+    } else {
+      res.redirect('/cancel.html');
+    }
+  } catch (error) {
+    res.status(500).send("Error verifying payment");
+  }
+});
+
+// --- Paystack Webhook Listener (Background Verification) ---
+app.post('/paystack-webhook', async (req, res) => {
+  // 1. Verify request security signature
+  const hash = crypto
+    .createHmac('sha512', PAYSTACK_SECRET_KEY)
+    .update(JSON.stringify(req.body))
+    .digest('hex');
+
+  if (hash === req.headers['x-paystack-signature']) {
+    const event = req.body;
+
+    // 2. Handle successful charge event
+    if (event.event === 'charge.success') {
+      const reference = event.data.reference;
+      
+      const order = await Order.findOne({ reference: reference });
+      if (order && order.status !== 'Paid') {
+        order.status = 'Paid';
+        await order.save();
+        console.log(`⚡ WEBHOOK: Order ${reference} updated to PAID via background signal!`);
+      }
+    }
+  }
+
+  // Always acknowledge receipt with 200 OK
+  res.sendStatus(200);
+});
+
+// --- Admin Dashboard Routes ---
+app.get('/admin', (req, res) => res.sendFile(__dirname + '/public/admin.html'));
+
+app.get('/api/orders', async (req, res) => {
+  try {
+    const orders = await Order.find().sort({ createdAt: -1 });
+    res.json(orders);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch orders" });
+  }
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Portal Platform</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background-color: #f4f7f6; 
+            color: #333; 
+        }
+        header { 
+            background-color: #1a1a2e; 
+            padding: 20px; 
+        }
+        nav { 
+            display: flex; 
+            gap: 20px; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+        }
+        nav a { 
+            color: white; 
+            text-decoration: none; 
+            font-weight: bold; 
+        }
+        nav a:hover { 
+            color: #e94560; 
+        }
+        .container { 
+            max-width: 1200px; 
+            margin: 40px auto; 
+            padding: 20px; 
+        }
+        .checkout-card { 
+            background: white; 
+            padding: 30px; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+            max-width: 400px; 
+        }
+        .btn { 
+            background-color: #0f3460; 
+            color: white; 
+            padding: 12px 24px; 
+            border: none; 
+            border-radius: 4px; 
+            font-size: 16px; 
+            cursor: pointer; 
+            width: 100%; 
+            font-weight: bold; 
+        }
+        .btn:hover { 
+            background-color: #e94560; 
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/about.html">About</a>
+            <a href="/services.html">Services</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1>Welcome to Your Custom Platform</h1>
+        <p>This page sends an active checkout request directly to your Node.js backend.</p>
+        
+        <div class="checkout-card">
+            <h2>Ultimate Package</h2>
+            <p>Full Web Application setup including DB integration and user auth.</p>
+            <h3>R 5,000.00</h3>
+            
+            <!-- This HTML form submits directly to server.js -->
+            <form action="/create-checkout-session" method="POST">
+                <button class="btn" type="submit">Proceed to Secure Checkout</button>
+            </form>
+        </div>
+    </main>
+
+</body>
+</html>
