@@ -57,7 +57,7 @@ app.post('/create-checkout-session', async (req, res) => {
         email: customerEmail,
         amount: priceInCents,
         currency: "ZAR",
-        callback_url: `http://localhost:3000/verify-payment`
+        callback_url: `http://vanzyldevelopers.online/verify-payment`
       })
     });
 
