@@ -5,7 +5,7 @@ const app = express();
 
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json()); // Required to parse JSON payload sent by Paystack webhook
+app.use(express.json());
 
 app.use((req, res, next) => {
   console.log(`📡 Incoming traffic: ${req.method} ${req.url}`);
@@ -15,14 +15,13 @@ app.use((req, res, next) => {
 const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY || 'sk_test_b4bc4bc545029d23f829c12977446ec5010968a8';
 const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://jeandrevanzyl264_db_user:25FzusFWg759EYxb@vanzyldevelopers.nnlid44.mongodb.net/payment-db?retryWrites=true&w=majority&appName=VANZYLDEVELOPERS';
 
-// --- Database Connection ---
 mongoose.connect(MONGO_URI)
   .then(() => console.log('✅ Connected to MongoDB!'))
   .catch(err => console.error('❌ Database Connection Failed:', err));
 
-// --- Database Schema ---
 const orderSchema = new mongoose.Schema({
   email: String,
+  packageName: String,
   amount: Number,
   reference: String,
   status: { type: String, default: 'Pending' },
@@ -31,18 +30,27 @@ const orderSchema = new mongoose.Schema({
 
 const Order = mongoose.model('Order', orderSchema);
 
-// --- User Routes ---
 app.get('/', (req, res) => res.sendFile(__dirname + '/public/index.html'));
 
-// Initialize Checkout
+// Initialize Checkout with dynamic packages
 app.post('/create-checkout-session', async (req, res) => {
   try {
+    const { packageType } = req.body;
+
+    // Define packages in South African Cents (ZAR)
+    const packageCatalog = {
+      starter: { name: "Starter Package", amount: 150000 },       // R1,500.00
+      pro: { name: "Professional Package", amount: 500000 },      // R5,000.00
+      enterprise: { name: "Enterprise Package", amount: 1200000 } // R12,000.00
+    };
+
+    const selected = packageCatalog[packageType] || packageCatalog.pro;
     const customerEmail = "customer@example.com"; 
-    const priceInCents = 500000; // R5000.00
 
     const newOrder = new Order({
       email: customerEmail,
-      amount: priceInCents / 100
+      packageName: selected.name,
+      amount: selected.amount / 100
     });
 
     const savedOrder = await newOrder.save();
@@ -55,9 +63,8 @@ app.post('/create-checkout-session', async (req, res) => {
       },
       body: JSON.stringify({
         email: customerEmail,
-        amount: priceInCents,
+        amount: selected.amount,
         currency: "ZAR",
-        // Direct Paystack to Render so your backend handles verification
         callback_url: `https://vanzyl-payment-backend.onrender.com/verify-payment`
       })
     });
@@ -77,7 +84,7 @@ app.post('/create-checkout-session', async (req, res) => {
   }
 });
 
-// Verify Payment Status (Frontend Redirect)
+// Verify Payment Status
 app.get('/verify-payment', async (req, res) => {
   const { reference } = req.query;
   if (!reference) return res.status(400).send("No reference provided.");
@@ -96,10 +103,8 @@ app.get('/verify-payment', async (req, res) => {
         order.status = 'Paid';
         await order.save();
       }
-      // Redirect back to your live Netlify frontend success page
       res.redirect('https://vanzyldevelopers.online/success.html');
     } else {
-      // Redirect back to your live Netlify frontend cancel page
       res.redirect('https://vanzyldevelopers.online/cancel.html');
     }
   } catch (error) {
@@ -107,7 +112,6 @@ app.get('/verify-payment', async (req, res) => {
   }
 });
 
-// --- Paystack Webhook Listener (Background Verification) ---
 app.post('/paystack-webhook', async (req, res) => {
   const hash = crypto
     .createHmac('sha512', PAYSTACK_SECRET_KEY)
@@ -116,25 +120,19 @@ app.post('/paystack-webhook', async (req, res) => {
 
   if (hash === req.headers['x-paystack-signature']) {
     const event = req.body;
-
     if (event.event === 'charge.success') {
       const reference = event.data.reference;
-      
       const order = await Order.findOne({ reference: reference });
       if (order && order.status !== 'Paid') {
         order.status = 'Paid';
         await order.save();
-        console.log(`⚡ WEBHOOK: Order ${reference} updated to PAID via background signal!`);
       }
     }
   }
-
   res.sendStatus(200);
 });
 
-// --- Admin Dashboard Routes ---
 app.get('/admin', (req, res) => res.sendFile(__dirname + '/public/admin.html'));
-
 app.get('/api/orders', async (req, res) => {
   try {
     const orders = await Order.find().sort({ createdAt: -1 });
