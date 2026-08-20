@@ -38,7 +38,7 @@ app.get('/', (req, res) => res.sendFile(__dirname + '/public/index.html'));
 app.post('/create-checkout-session', async (req, res) => {
   try {
     const customerEmail = "customer@example.com"; 
-    const priceInCents = 5000; // R50.00
+    const priceInCents = 500000; // R5000.00
 
     const newOrder = new Order({
       email: customerEmail,

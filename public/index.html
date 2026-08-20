@@ -3,86 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Portal Platform</title>
+    <title>Van Zyl Developers | Modern Tech Solutions</title>
     <style>
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            margin: 0; 
-            padding: 0; 
-            background-color: #f4f7f6; 
-            color: #333; 
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --accent-blue: #00d2ff;
+            --accent-purple: #9254de;
+            --text-color: #f0f4f8;
+            --text-muted: #94a3b8;
         }
-        header { 
-            background-color: #1a1a2e; 
-            padding: 20px; 
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; }
+
+        header {
+            padding: 2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(11, 15, 25, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 100;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
-        nav { 
-            display: flex; 
-            gap: 20px; 
-            max-width: 1200px; 
-            margin: 0 auto; 
+
+        .logo { font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 3rem 1.5rem; }
+
+        .hero { text-align: center; margin-bottom: 4rem; }
+        .hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 1rem; }
+        .hero p { color: var(--text-muted); font-size: 1.2rem; max-width: 600px; margin: 0 auto 2rem; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(12px);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
-        nav a { 
-            color: white; 
-            text-decoration: none; 
-            font-weight: bold; 
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent-blue);
+            box-shadow: 0 10px 30px rgba(0, 210, 255, 0.15);
         }
-        nav a:hover { 
-            color: #e94560; 
+
+        .btn {
+            display: inline-block; width: 100%; padding: 0.9rem;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: white; font-weight: 600; text-align: center; border: none;
+            border-radius: 8px; cursor: pointer; text-decoration: none;
+            transition: opacity 0.3s ease;
         }
-        .container { 
-            max-width: 1200px; 
-            margin: 40px auto; 
-            padding: 20px; 
+        .btn:hover { opacity: 0.9; }
+
+        .contact-link {
+            display: flex; align-items: center; gap: 1rem; color: var(--text-color);
+            text-decoration: none; padding: 0.8rem; border-radius: 8px;
+            background: rgba(255,255,255,0.03); margin-bottom: 0.8rem;
+            transition: background 0.2s ease;
         }
-        .checkout-card { 
-            background: white; 
-            padding: 30px; 
-            border-radius: 8px; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
-            max-width: 400px; 
-        }
-        .btn { 
-            background-color: #0f3460; 
-            color: white; 
-            padding: 12px 24px; 
-            border: none; 
-            border-radius: 4px; 
-            font-size: 16px; 
-            cursor: pointer; 
-            width: 100%; 
-            font-weight: bold; 
-        }
-        .btn:hover { 
-            background-color: #e94560; 
-        }
+        .contact-link:hover { background: rgba(0, 210, 255, 0.1); }
+
+        footer { text-align: center; padding: 2rem; color: var(--text-muted); border-top: 1px solid rgba(255,255,255,0.1); margin-top: 4rem; }
     </style>
 </head>
 <body>
 
     <header>
-        <nav>
-            <a href="/">Home</a>
-            <a href="/about.html">About</a>
-            <a href="/services.html">Services</a>
-        </nav>
+        <div class="logo">Van Zyl Developers</div>
     </header>
 
-    <main class="container">
-        <h1>Welcome to Your Custom Platform</h1>
-        <p>This page sends an active checkout request directly to your Node.js backend.</p>
-        
-        <div class="checkout-card">
-            <h2>Ultimate Package</h2>
-            <p>Full Web Application setup including DB integration and user auth.</p>
-            <h3>R 5,000.00</h3>
-            
-            <!-- This HTML form submits directly to server.js -->
-            <form action="/create-checkout-session" method="POST">
-                <button class="btn" type="submit">Proceed to Secure Checkout</button>
-            </form>
+    <div class="container">
+        <section class="hero">
+            <h1>Scalable Web Solutions & Integration</h1>
+            <p>Deploying secure web applications with active payment portals and automated background webhooks.</p>
+        </section>
+
+        <div class="grid">
+            <!-- Payment Portal Card -->
+            <div class="card">
+                <h2>Secure Checkout</h2>
+                <p style="color: var(--text-muted); margin: 1rem 0;">Test our instant payment gateway connected to Paystack & MongoDB.</p>
+                <form action="https://vanzyl-payment-backend.onrender.com/create-checkout-session" method="POST">
+                    <button type="submit" class="btn">Pay R5000.00 Now</button>
+                </form>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="card">
+                <h2>Get in Touch</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1rem;">Direct communication channels:</p>
+                
+                <a href="mailto:jeandrevanzyl264@gmail.com" class="contact-link">
+                    📧 jeandrevanzyl264@gmail.com
+                </a>
+                <a href="tel:+27839913592" class="contact-link">
+                    📞 +27839913592
+                </a>
+                <a href="https://wa.me/+27839913592" target="_blank" class="contact-link">
+                    💬 WhatsApp Chat
+                </a>
+            </div>
         </div>
-    </main>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Van Zyl Developers. Hosted via Netlify & Render.</p>
+    </footer>
 
 </body>
 </html>
