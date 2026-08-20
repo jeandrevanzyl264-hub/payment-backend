@@ -12,8 +12,8 @@ app.use((req, res, next) => {
   next();
 });
 
-const PAYSTACK_SECRET_KEY = 'sk_test_b4bc4bc545029d23f829c12977446ec5010968a8';
-const MONGO_URI = 'mongodb+srv://jeandrevanzyl264_db_user:25FzusFWg759EYxb@vanzyldevelopers.nnlid44.mongodb.net/payment-db?retryWrites=true&w=majority&appName=VANZYLDEVELOPERS';
+const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY || 'sk_test_b4bc4bc545029d23f829c12977446ec5010968a8';
+const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://jeandrevanzyl264_db_user:25FzusFWg759EYxb@vanzyldevelopers.nnlid44.mongodb.net/payment-db?retryWrites=true&w=majority&appName=VANZYLDEVELOPERS';
 
 // --- Database Connection ---
 mongoose.connect(MONGO_URI)
@@ -38,7 +38,7 @@ app.get('/', (req, res) => res.sendFile(__dirname + '/public/index.html'));
 app.post('/create-checkout-session', async (req, res) => {
   try {
     const customerEmail = "customer@example.com"; 
-    const priceInCents = 500000;
+    const priceInCents = 5000; // R50.00
 
     const newOrder = new Order({
       email: customerEmail,
@@ -57,7 +57,8 @@ app.post('/create-checkout-session', async (req, res) => {
         email: customerEmail,
         amount: priceInCents,
         currency: "ZAR",
-        callback_url: `http://vanzyldevelopers.online/verify-payment`
+        // Direct Paystack to Render so your backend handles verification
+        callback_url: `https://vanzyl-payment-backend.onrender.com/verify-payment`
       })
     });
 
@@ -95,9 +96,11 @@ app.get('/verify-payment', async (req, res) => {
         order.status = 'Paid';
         await order.save();
       }
-      res.redirect('/success.html');
+      // Redirect back to your live Netlify frontend success page
+      res.redirect('https://vanzyldevelopers.online/success.html');
     } else {
-      res.redirect('/cancel.html');
+      // Redirect back to your live Netlify frontend cancel page
+      res.redirect('https://vanzyldevelopers.online/cancel.html');
     }
   } catch (error) {
     res.status(500).send("Error verifying payment");
@@ -106,7 +109,6 @@ app.get('/verify-payment', async (req, res) => {
 
 // --- Paystack Webhook Listener (Background Verification) ---
 app.post('/paystack-webhook', async (req, res) => {
-  // 1. Verify request security signature
   const hash = crypto
     .createHmac('sha512', PAYSTACK_SECRET_KEY)
     .update(JSON.stringify(req.body))
@@ -115,7 +117,6 @@ app.post('/paystack-webhook', async (req, res) => {
   if (hash === req.headers['x-paystack-signature']) {
     const event = req.body;
 
-    // 2. Handle successful charge event
     if (event.event === 'charge.success') {
       const reference = event.data.reference;
       
@@ -128,7 +129,6 @@ app.post('/paystack-webhook', async (req, res) => {
     }
   }
 
-  // Always acknowledge receipt with 200 OK
   res.sendStatus(200);
 });
 
