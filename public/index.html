@@ -3,119 +3,379 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Van Zyl Developers | Modern Tech Solutions</title>
+    <title>Van Zyl Developers | Nature-Inspired Tech Solutions</title>
+
+    <!-- Google Search Console Verification -->
+    <meta name="google-site-verification" content="TDqxdq7tOgl4sQYE-rQOYvw7YUiwdIUXo1MrUneF8Mc" />
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Van Zyl Developers provides custom web application development, Paystack payment gateway integration, and technical IT support in Ceres, Western Cape, South Africa.">
+    <meta name="keywords" content="website development, tech support, web developer Ceres, Western Cape, Paystack integration, custom web development South Africa, Van Zyl Developers">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://vanzyldevelopers.online">
+
+    <!-- Open Graph Tags for Social Media -->
+    <meta property="og:title" content="Van Zyl Developers | Nature-Inspired Tech Solutions">
+    <meta property="og:description" content="Crafting custom web applications with seamless payment integration, intuitive architecture, and eco-inspired aesthetics.">
+    <meta property="og:url" content="https://vanzyldevelopers.online">
+    <meta property="og:type" content="website">
+
+    <!-- Local Business Schema (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "name": "Van Zyl Developers",
+      "url": "https://vanzyldevelopers.online",
+      "email": "Jeandrevanzyl264@gmail.com",
+      "telephone": "+27839913592",
+      "priceRange": "R1500 - R12000",
+      "description": "Custom web application development, payment gateway setup, and IT technical support.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Ceres",
+        "addressRegion": "Western Cape",
+        "addressCountry": "ZA"
+      },
+      "areaServed": "South Africa"
+    }
+    </script>
+
     <style>
         :root {
-            --bg-color: #0b0f19;
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --accent-blue: #00d2ff;
-            --accent-purple: #9254de;
-            --text-color: #f0f4f8;
-            --text-muted: #94a3b8;
+            --bg-dark: #07130e;
+            --bg-card: rgba(18, 38, 29, 0.65);
+            --border-emerald: rgba(52, 211, 153, 0.2);
+            --accent-green: #10b981;
+            --accent-sage: #6ee7b7;
+            --accent-gold: #f59e0b;
+            --text-light: #ecfdf5;
+            --text-muted: #9ca3af;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; }
+        html { scroll-behavior: smooth; }
+        body { 
+            background: var(--bg-dark); 
+            color: var(--text-light); 
+            line-height: 1.6; 
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(245, 158, 11, 0.08) 0%, transparent 40%);
+        }
 
         header {
-            padding: 2rem 5%;
+            padding: 1.2rem 8%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(11, 15, 25, 0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(7, 19, 14, 0.85);
+            backdrop-filter: blur(16px);
             position: sticky; top: 0; z-index: 100;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid var(--border-emerald);
         }
 
-        .logo { font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .logo { 
+            font-size: 1.6rem; 
+            font-weight: 700; 
+            background: linear-gradient(135deg, var(--accent-sage), var(--accent-gold)); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
 
-        .container { max-width: 1200px; margin: 0 auto; padding: 3rem 1.5rem; }
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            margin-left: 1.5rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        nav a:hover { color: var(--accent-sage); }
 
-        .hero { text-align: center; margin-bottom: 4rem; }
-        .hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 1rem; }
-        .hero p { color: var(--text-muted); font-size: 1.2rem; max-width: 600px; margin: 0 auto 2rem; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 4rem 1.5rem; }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .hero { text-align: center; margin-bottom: 5rem; }
+        .hero h1 { 
+            font-size: clamp(2.2rem, 5vw, 3.8rem); 
+            margin-bottom: 1.2rem;
+            background: linear-gradient(180deg, #ffffff, var(--accent-sage));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p { color: var(--text-muted); font-size: 1.2rem; max-width: 680px; margin: 0 auto; }
+
+        /* Scroll Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 2.5rem;
+            color: var(--accent-sage);
+        }
+
+        /* Grid Layouts */
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 5rem; }
 
         .card {
-            background: var(--card-bg);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 16px;
-            padding: 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-emerald);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
             backdrop-filter: blur(12px);
-            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+            position: relative;
         }
 
         .card:hover {
-            transform: translateY(-8px);
-            border-color: var(--accent-blue);
-            box-shadow: 0 10px 30px rgba(0, 210, 255, 0.15);
+            transform: translateY(-10px);
+            border-color: var(--accent-green);
+            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.2);
         }
+
+        .card.featured {
+            border-color: var(--accent-gold);
+            background: rgba(26, 48, 37, 0.85);
+        }
+        .badge {
+            position: absolute;
+            top: -12px;
+            right: 20px;
+            background: var(--accent-gold);
+            color: #000;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        .price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-light);
+            margin: 1rem 0;
+        }
+        .price span { font-size: 1rem; color: var(--text-muted); font-weight: 400; }
+
+        .feature-list { list-style: none; margin-bottom: 2rem; }
+        .feature-list li { margin-bottom: 0.7rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.5rem; }
+        .feature-list li::before { content: "🌿"; font-size: 0.9rem; }
 
         .btn {
-            display: inline-block; width: 100%; padding: 0.9rem;
-            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
-            color: white; font-weight: 600; text-align: center; border: none;
-            border-radius: 8px; cursor: pointer; text-decoration: none;
-            transition: opacity 0.3s ease;
+            display: inline-block; width: 100%; padding: 1rem;
+            background: linear-gradient(135deg, var(--accent-green), #059669);
+            color: white; font-weight: 700; text-align: center; border: none;
+            border-radius: 12px; cursor: pointer; text-decoration: none;
+            transition: opacity 0.3s ease, transform 0.2s ease;
         }
-        .btn:hover { opacity: 0.9; }
+        .btn:hover { opacity: 0.95; transform: scale(1.02); }
+        .btn-gold { background: linear-gradient(135deg, var(--accent-gold), #d97706); color: #000; }
 
+        /* Contact Section */
+        .contact-box {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 2rem;
+        }
         .contact-link {
-            display: flex; align-items: center; gap: 1rem; color: var(--text-color);
-            text-decoration: none; padding: 0.8rem; border-radius: 8px;
-            background: rgba(255,255,255,0.03); margin-bottom: 0.8rem;
-            transition: background 0.2s ease;
+            display: flex; align-items: center; gap: 1rem; color: var(--text-light);
+            text-decoration: none; padding: 1.2rem; border-radius: 14px;
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border-emerald);
+            transition: all 0.3s ease;
         }
-        .contact-link:hover { background: rgba(0, 210, 255, 0.1); }
+        .contact-link:hover { background: rgba(16, 185, 129, 0.15); border-color: var(--accent-green); }
 
-        footer { text-align: center; padding: 2rem; color: var(--text-muted); border-top: 1px solid rgba(255,255,255,0.1); margin-top: 4rem; }
+        /* Modal styling for Legal */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center;
+        }
+        .modal-content {
+            background: #0d2219; border: 1px solid var(--accent-green); padding: 2.5rem;
+            border-radius: 16px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto;
+        }
+        .close-btn { float: right; cursor: pointer; font-size: 1.5rem; color: var(--accent-gold); }
+
+        footer { 
+            text-align: center; padding: 3rem 1rem; color: var(--text-muted); 
+            border-top: 1px solid var(--border-emerald); margin-top: 5rem; 
+        }
+        footer a { color: var(--accent-sage); cursor: pointer; text-decoration: underline; margin: 0 0.5rem; }
     </style>
 </head>
 <body>
 
     <header>
         <div class="logo">Van Zyl Developers</div>
+        <nav>
+            <a href="#about">About</a>
+            <a href="#packages">Packages</a>
+            <a href="#contact">Contact</a>
+        </nav>
     </header>
 
     <div class="container">
-        <section class="hero">
-            <h1>Scalable Web Solutions & Integration</h1>
-            <p>Deploying secure web applications with active payment portals and automated background webhooks.</p>
+        <!-- Hero Section -->
+        <section class="hero reveal">
+            <h1>Organic Design, Engineered Performance</h1>
+            <p>Crafting custom web applications with seamless payment integration, intuitive architecture, and eco-inspired aesthetics.</p>
         </section>
 
-        <div class="grid">
-            <!-- Payment Portal Card -->
-            <div class="card">
-                <h2>Secure Checkout</h2>
-                <p style="color: var(--text-muted); margin: 1rem 0;">Test our instant payment gateway connected to Paystack & MongoDB.</p>
-                <form action="https://vanzyl-payment-backend.onrender.com/create-checkout-session" method="POST">
-                    <button type="submit" class="btn">Pay R5000.00 Now</button>
-                </form>
+        <!-- About Us Section -->
+        <section id="about" class="reveal" style="margin-bottom: 6rem;">
+            <h2 class="section-title">About Us</h2>
+            <div class="card" style="max-width: 900px; margin: 0 auto; text-align: center;">
+                <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1rem;">
+                    At <strong>Van Zyl Developers</strong>, we bridge modern technology with organic user experiences. Specializing in full-stack web platforms, custom payment gateways, and scalable cloud deployments, we build digital infrastructure that thrives naturally.
+                </p>
+                <p style="font-size: 1.1rem; color: var(--text-muted);">
+                    Whether launching a modern online storefront or streamlining backend automated webhooks, our mission is to deliver secure, resilient solutions engineered for growth.
+                </p>
             </div>
+        </section>
 
-            <!-- Contact Section -->
-            <div class="card">
-                <h2>Get in Touch</h2>
-                <p style="color: var(--text-muted); margin-bottom: 1rem;">Direct communication channels:</p>
+        <!-- Pricing Packages Section -->
+        <section id="packages" class="reveal">
+            <h2 class="section-title">Our Service Packages</h2>
+            <div class="grid-3">
                 
+                <!-- Starter Package -->
+                <div class="card">
+                    <h3>Starter</h3>
+                    <div class="price">R1,500 <span>/ one-time</span></div>
+                    <ul class="feature-list">
+                        <li>Single Page Website Design</li>
+                        <li>Mobile Responsive Layout</li>
+                        <li>Paystack Gateway Integration</li>
+                        <li>Standard Support</li>
+                    </ul>
+                    <form action="https://vanzyl-payment-backend.onrender.com/create-checkout-session" method="POST">
+                        <input type="hidden" name="packageType" value="starter">
+                        <button type="submit" class="btn">Select Starter</button>
+                    </form>
+                </div>
+
+                <!-- Professional Package (Featured) -->
+                <div class="card featured">
+                    <span class="badge">Most Popular</span>
+                    <h3>Professional</h3>
+                    <div class="price">R5,000 <span>/ one-time</span></div>
+                    <ul class="feature-list">
+                        <li>Multi-Page Custom Web App</li>
+                        <li>Full MongoDB Database Setup</li>
+                        <li>Automated Paystack Webhooks</li>
+                        <li>Priority Support & Analytics</li>
+                    </ul>
+                    <form action="https://vanzyl-payment-backend.onrender.com/create-checkout-session" method="POST">
+                        <input type="hidden" name="packageType" value="pro">
+                        <button type="submit" class="btn btn-gold">Select Professional</button>
+                    </form>
+                </div>
+
+                <!-- Enterprise Package -->
+                <div class="card">
+                    <h3>Enterprise</h3>
+                    <div class="price">R12,000 <span>/ custom build</span></div>
+                    <ul class="feature-list">
+                        <li>Full Architecture & Custom APIs</li>
+                        <li>Dedicated Cloud Infrastructure</li>
+                        <li>Advanced Security & Database Scaling</li>
+                        <li>24/7 Ongoing Maintenance</li>
+                    </ul>
+                    <form action="https://vanzyl-payment-backend.onrender.com/create-checkout-session" method="POST">
+                        <input type="hidden" name="packageType" value="enterprise">
+                        <button type="submit" class="btn">Select Enterprise</button>
+                    </form>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="reveal">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="contact-box">
                 <a href="mailto:jeandrevanzyl264@gmail.com" class="contact-link">
-                    📧 jeandrevanzyl264@gmail.com
+                    <span style="font-size: 1.5rem;">📧</span>
+                    <div>
+                        <strong>Email Us</strong>
+                        <div style="font-size: 0.85rem; color: var(--text-muted);">Jeandrevanzyl264@gmail.com</div>
+                    </div>
                 </a>
                 <a href="tel:+27839913592" class="contact-link">
-                    📞 +27839913592
+                    <span style="font-size: 1.5rem;">📞</span>
+                    <div>
+                        <strong>Call Us</strong>
+                        <div style="font-size: 0.85rem; color: var(--text-muted);">+27 83 991 3592</div>
+                    </div>
                 </a>
-                <a href="https://wa.me/+27839913592" target="_blank" class="contact-link">
-                    💬 WhatsApp Chat
+                <a href="https://wa.me/27839913592" target="_blank" class="contact-link">
+                    <span style="font-size: 1.5rem;">💬</span>
+                    <div>
+                        <strong>WhatsApp</strong>
+                        <div style="font-size: 0.85rem; color: var(--text-muted);">Instant Chat Support</div>
+                    </div>
                 </a>
             </div>
+        </section>
+    </div>
+
+    <!-- Legal Modals -->
+    <div id="privacyModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('privacyModal')">&times;</span>
+            <h2>Privacy Policy</h2>
+            <p style="margin-top: 1rem; color: var(--text-muted);">
+                At Van Zyl Developers, we respect your personal data. Any payment information submitted is processed directly and securely via Paystack using standard SSL encryption. We do not store financial account credentials on our local servers.
+            </p>
+        </div>
+    </div>
+
+    <div id="termsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('termsModal')">&times;</span>
+            <h2>Terms & Conditions</h2>
+            <p style="margin-top: 1rem; color: var(--text-muted);">
+                By selecting a package and initiating payment, you agree to our service terms. Digital services are delivered upon receipt of payment confirmation from Paystack. All customized architectural services are non-refundable once deployment begins.
+            </p>
         </div>
     </div>
 
     <footer>
-        <p>&copy; 2026 Van Zyl Developers. Hosted via Netlify & Render.</p>
+        <p>&copy; 2026 Van Zyl Developers. Built with performance in mind.</p>
+        <p style="margin-top: 0.5rem;">
+            <a onclick="openModal('privacyModal')">Privacy Policy</a> | 
+            <a onclick="openModal('termsModal')">Terms & Conditions</a>
+        </p>
     </footer>
 
+    <script>
+        // Scroll Reveal Animation Logic
+        function reveal() {
+            const reveals = document.querySelectorAll('.reveal');
+            for (let i = 0; i < reveals.length; i++) {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveals[i].getBoundingClientRect().top;
+                const elementVisible = 120;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add('active');
+                }
+            }
+        }
+        window.addEventListener('scroll', reveal);
+        reveal(); // Initial check on load
+
+        // Modal Controls
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    </script>
 </body>
 </html>
